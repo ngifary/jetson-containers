@@ -26,7 +26,7 @@ FROM ${BASE_IMAGE}
 # setup environment
 #
 ENV DEBIAN_FRONTEND=noninteractive
-ARG HDF5_DIR="/usr/lib/aarch64-linux-gnu/hdf5/serial/"
+ARG HDF5_DIR="/usr/lib/$(uname -i)-linux-gnu/hdf5/serial/"
 ARG MAKEFLAGS=-j$(nproc)
 
 RUN printenv
@@ -70,7 +70,7 @@ RUN pip3 install --no-cache-dir setuptools Cython wheel
 ARG PROTOBUF_VERSION=3.19.4
 ARG PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}
 ARG PROTOBUF_DIR=protobuf-python-${PROTOBUF_VERSION}
-ARG PROTOC_DIR=protoc-${PROTOBUF_VERSION}-linux-aarch_64
+ARG PROTOC_DIR=protoc-${PROTOBUF_VERSION}-linux-x86_64
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
 
 RUN cd /tmp && \
@@ -116,8 +116,8 @@ RUN pip3 install --no-cache-dir --verbose future==0.18.2 mock==3.0.5 keras_prepr
 #
 # TensorFlow 
 #
-ARG TENSORFLOW_URL=https://developer.download.nvidia.com/compute/redist/jp/v44/tensorflow/tensorflow-1.15.3+nv20.9-cp36-cp36m-linux_aarch64.whl
-ARG TENSORFLOW_WHL=tensorflow-1.15.3+nv20.9-cp36-cp36m-linux_aarch64.whl
+ARG TENSORFLOW_URL=https://developer.download.nvidia.com/compute/redist/jp/v44/tensorflow/tensorflow-1.15.3+nv20.9-cp36-cp36m-linux_$(uname -i).whl
+ARG TENSORFLOW_WHL=tensorflow-1.15.3+nv20.9-cp36-cp36m-linux_$(uname -i).whl
 
 RUN wget --quiet --show-progress --progress=bar:force:noscroll --no-check-certificate ${TENSORFLOW_URL} -O ${TENSORFLOW_WHL} && \
     pip3 install --no-cache-dir --verbose ${TENSORFLOW_WHL} && \
